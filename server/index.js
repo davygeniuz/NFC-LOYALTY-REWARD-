@@ -52,6 +52,11 @@ function requireAuth(req, res, next) {
 
 /* ------------------------------ public routes ------------------------------ */
 
+/* Liveness/readiness probe used by hosting platforms (Render, Railway, Fly…). */
+app.get('/api/health', (req, res) => {
+  res.json({ ok: true, uptime: Math.round(process.uptime()), service: 'taployal' });
+});
+
 app.get('/api/bootstrap', (req, res) => {
   const s = store.data.settings;
   res.json({

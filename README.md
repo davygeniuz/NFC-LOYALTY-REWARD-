@@ -49,6 +49,15 @@ tab — the complete loop (tap → earn → wallet → redeem) is exercised end-
 - **Tiers** — lifetime-points ladder (Member → Gold → Reserve by default), each
   with a headline perk; tier-ups are celebrated on the tap screen.
 
+## Deploying a permanent link
+
+The repo ships a `Dockerfile`, a Render blueprint (`render.yaml`) and a health
+probe (`/api/health`). Fastest path: **Render → New Web Service → pick this
+repo** — it auto-detects the Dockerfile and hands you a permanent
+`https://taployal.onrender.com` (guest entry at `/demo`). Set
+`TAPLOYAL_DATA_DIR=/data` + a mounted volume for persistence. Full step-by-step
+(incl. Railway, Fly, plain Docker): **[DEPLOY.md](DEPLOY.md)**.
+
 ## Tech
 
 - **Backend** — Node 18+, Express 4. JSON-file persistence with atomic writes

@@ -9,7 +9,9 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const DATA_DIR = process.env.TAPLOYAL_DATA_DIR
+  ? path.resolve(process.env.TAPLOYAL_DATA_DIR)
+  : path.join(__dirname, '..', 'data');
 const DB_PATH = path.join(DATA_DIR, 'db.json');
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -218,7 +220,7 @@ class Store {
     } catch {
       this.data = seed();
       this.save();
-      console.log('[taployal] seeded demo database → data/db.json');
+      console.log(`[taployal] seeded demo database → ${DB_PATH}`);
     }
     return this.data;
   }

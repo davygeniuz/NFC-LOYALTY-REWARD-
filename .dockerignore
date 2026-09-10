@@ -1,0 +1,8 @@
+node_modules
+data/db.json
+data/*.tmp
+.git
+.gitignore
+*.log
+.DS_Store
+DEPLOY.md
