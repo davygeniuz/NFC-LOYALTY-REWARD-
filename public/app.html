@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · Taployal</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<!-- ============================ LOGIN GATE ============================ -->
+<div class="auth-stage" id="authStage" hidden>
+  <div class="auth-glow"></div>
+  <div class="auth-card">
+    <a class="brand" href="/" style="justify-content:center">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span>
+      <span class="brand-name">Tap<em>loyal</em></span>
+    </a>
+    <h1 class="display">Merchant sign in</h1>
+    <p class="sub">Welcome back. Your counter missed you.</p>
+    <div class="auth-error" id="authError"></div>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input class="input" id="loginEmail" type="email" autocomplete="username" placeholder="you@business.com" required />
+      </div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <input class="input" id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••" required />
+      </div>
+      <button class="btn btn-gold btn-block" type="submit" id="loginBtn">Sign in</button>
+    </form>
+    <div class="demo-fill">
+      Demo account — <code style="color:var(--gold-300)">demo@taployal.io</code> / <code style="color:var(--gold-300)">demo1234</code>
+      <button type="button" id="fillDemo">autofill</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== SHELL ============================== -->
+<div class="shell" id="shell" hidden>
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span>
+      <span class="brand-name">Tap<em>loyal</em></span>
+    </a>
+    <div class="side-label">Programme</div>
+    <nav class="side-nav" id="sideNav"></nav>
+    <div class="side-label">Shortcuts</div>
+    <nav class="side-nav">
+      <button class="side-link" id="simTap"><span data-ic="wave"></span>Simulate customer tap</button>
+      <a class="side-link" href="/" target="_blank" rel="noopener"><span data-ic="external"></span>Marketing page</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="side-user">
+        <span class="avatar sm" id="userAvatar">A</span>
+        <div class="meta">
+          <b id="userName">—</b>
+          <span id="userBiz">—</span>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm btn-block" id="logoutBtn"><span data-ic="leave" data-cls="icon"></span>Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu"><span data-ic="menu"></span></button>
+      <div>
+        <h1 id="viewTitle">Overview</h1>
+        <div class="crumb" id="viewCrumb">Today at a glance</div>
+      </div>
+      <div class="spacer"></div>
+      <span class="pill pill-mint" id="livePill" title="Updates in real time"><span class="dot"></span>Live</span>
+      <button class="btn btn-dark btn-sm" id="topSimTap"><span data-ic="wave" data-cls="icon"></span>Simulate tap</button>
+    </div>
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <section class="view" id="view-overview">
+        <div class="stat-grid" id="statGrid"></div>
+        <div class="ov-grid">
+          <div class="card">
+            <div class="panel-head">
+              <span class="panel-title">Taps · last 30 days</span>
+              <div class="chart-legend">
+                <span><i style="background:var(--gold)"></i>Earning taps</span>
+                <span><i style="background:rgba(125,214,176,.9)"></i>New members</span>
+              </div>
+            </div>
+            <div class="panel-body" id="chartBody"></div>
+          </div>
+          <div style="display:grid;gap:16px">
+            <div class="card">
+              <div class="panel-head"><span class="panel-title">Tier mix</span></div>
+              <div class="panel-body" id="donutBody"></div>
+            </div>
+            <div class="card">
+              <div class="panel-head"><span class="panel-title">Top members</span></div>
+              <div class="panel-body" id="topMembers" style="display:grid;gap:4px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <div class="panel-head"><span class="panel-title">Live activity</span>
+            <button class="btn btn-ghost btn-xs" id="refreshFeed"><span data-ic="refresh"></span>Refresh</button>
+          </div>
+          <div class="panel-body"><div class="feed" id="feed"></div></div>
+        </div>
+      </section>
+
+      <!-- MEMBERS -->
+      <section class="view" id="view-members">
+        <div class="toolbar">
+          <div class="search-box">
+            <span data-ic="search"></span>
+            <input class="input" id="memberSearch" placeholder="Search name or email…" />
+          </div>
+          <select class="select" id="memberSort" style="width:auto">
+            <option value="recent">Most recent</option>
+            <option value="points">Highest balance</option>
+            <option value="lifetime">Most lifetime</option>
+            <option value="visits">Most visits</option>
+            <option value="name">Name A–Z</option>
+          </select>
+          <div class="spacer"></div>
+          <button class="btn btn-gold btn-sm" id="addMemberBtn"><span data-ic="plus" data-cls="icon"></span>New member</button>
+        </div>
+        <div class="card table-wrap"><table class="tbl" id="memberTable"></table></div>
+      </section>
+
+      <!-- REWARDS -->
+      <section class="view" id="view-rewards">
+        <div class="toolbar">
+          <p class="hint" id="rewardHint" style="margin:0"></p>
+          <div class="spacer"></div>
+          <button class="btn btn-gold btn-sm" id="addRewardBtn"><span data-ic="plus" data-cls="icon"></span>New reward</button>
+        </div>
+        <div class="reward-grid" id="rewardGrid"></div>
+      </section>
+
+      <!-- TAGS -->
+      <section class="view" id="view-tags">
+        <div class="toolbar">
+          <p class="hint" style="margin:0">Each tag carries a unique earn link — copy it onto your NFC stickers.</p>
+          <div class="spacer"></div>
+          <button class="btn btn-gold btn-sm" id="addTagBtn"><span data-ic="plus" data-cls="icon"></span>Register tag</button>
+        </div>
+        <div class="card table-wrap"><table class="tbl" id="tagTable"></table></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="view-settings">
+        <div class="ov-grid">
+          <div class="card">
+            <div class="panel-head"><span class="panel-title">Programme</span></div>
+            <div class="panel-body">
+              <div class="field"><label>Business name</label><input class="input" id="setBiz" /></div>
+              <div class="field"><label>Tagline</label><input class="input" id="setTagline" /></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div class="field"><label>Points / visit</label><input class="input" id="setPPV" type="number" min="1" max="1000" /></div>
+                <div class="field"><label>Welcome bonus</label><input class="input" id="setBonus" type="number" min="0" max="5000" /></div>
+                <div class="field"><label>Cooldown (hrs)</label><input class="input" id="setCooldown" type="number" min="0" max="72" /></div>
+              </div>
+              <p class="hint">Cooldown is the minimum time between two earning taps for the same member.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="panel-head"><span class="panel-title">Membership tiers</span>
+              <button class="btn btn-ghost btn-xs" id="addTierBtn"><span data-ic="plus"></span>Add tier</button>
+            </div>
+            <div class="panel-body">
+              <div id="tierRows"></div>
+              <p class="hint">Tiers unlock by lifetime points. The first tier always starts at zero.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:18px;display:flex;justify-content:flex-end">
+          <button class="btn btn-gold" id="saveSettings">Save changes</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============================ MODALS ============================ -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h2 class="display modal-title">New member</h2>
+      <button class="icon-btn" data-close><span data-ic="x"></span></button>
+    </div>
+    <p class="modal-sub">Enrol someone from the counter — they can claim their card immediately.</p>
+    <div class="field"><label>Full name</label><input class="input" id="nmName" placeholder="Jordan Ellis" /></div>
+    <div class="field"><label>Email</label><input class="input" id="nmEmail" type="email" placeholder="jordan@example.com" /></div>
+    <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--text-mid)">
+      <span class="switch"><input type="checkbox" id="nmTag" checked /><span class="track"></span></span>
+      Assign a fresh NFC tag now
+    </label>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-gold" id="nmCreate">Create member</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span class="avatar" id="dmAvatar">S</span>
+        <div>
+          <h2 class="display modal-title" id="dmName">—</h2>
+          <div style="font-size:12.5px;color:var(--text-lo)" id="dmEmail">—</div>
+        </div>
+      </div>
+      <button class="icon-btn" data-close><span data-ic="x"></span></button>
+    </div>
+    <div id="dmBody"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="rewardModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h2 class="display modal-title" id="rwTitle">New reward</h2>
+      <button class="icon-btn" data-close><span data-ic="x"></span></button>
+    </div>
+    <p class="modal-sub">Rewards appear instantly in every member's wallet.</p>
+    <input type="hidden" id="rwId" />
+    <div class="field"><label>Title</label><input class="input" id="rwName" placeholder="Free Espresso" maxlength="60" /></div>
+    <div class="field"><label>Description</label><textarea class="textarea" id="rwDesc" placeholder="Any single-origin shot, pulled your way." maxlength="160"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="field"><label>Cost (points)</label><input class="input" id="rwCost" type="number" min="1" placeholder="120" /></div>
+      <div class="field"><label>Stock (blank = ∞)</label><input class="input" id="rwStock" type="number" min="0" placeholder="∞" /></div>
+    </div>
+    <div class="field"><label>Icon</label><div class="icon-pick" id="rwIcons"></div></div>
+    <label style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--text-mid)">
+      <span class="switch"><input type="checkbox" id="rwActive" checked /><span class="track"></span></span>
+      Visible to members
+    </label>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-gold" id="rwSave">Save reward</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" role="dialog" aria-modal="true" style="width:min(400px,100%)">
+    <div class="modal-head"><h2 class="display modal-title" id="cfTitle">Are you sure?</h2></div>
+    <p class="modal-sub" id="cfText"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" data-close>Keep it</button>
+      <button class="btn" id="cfYes" style="background:rgba(224,120,86,.16);border-color:rgba(224,120,86,.5);color:#f2b39d">Yes, remove</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="assignModal">
+  <div class="modal" role="dialog" aria-modal="true" style="width:min(430px,100%)">
+    <div class="modal-head">
+      <h2 class="display modal-title">Link tag</h2>
+      <button class="icon-btn" data-close><span data-ic="x"></span></button>
+    </div>
+    <p class="modal-sub">Attach <span class="tag-mono" id="amUid">—</span> to a member.</p>
+    <div class="field"><label>Member</label><select class="select" id="amMember"></select></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-gold" id="amSave">Link member</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-root"></div>
+<div id="modalRoot"></div>
+
+<script src="/js/common.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

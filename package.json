@@ -1,0 +1,18 @@
+{
+  "name": "taployal",
+  "version": "1.0.0",
+  "description": "Taployal — NFC-powered loyalty & rewards platform. Merchants get a live dashboard; customers earn points with a single tap of their phone.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "reset-db": "node -e \"require('fs').rmSync('data/db.json',{force:true});console.log('Database cleared — will re-seed on next start')\""
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.22.2"
+  }
+}

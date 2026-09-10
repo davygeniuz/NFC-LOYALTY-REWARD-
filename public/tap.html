@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Earning points… · Ember &amp; Oak</title>
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#0a0b09" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="tap-stage">
+  <div class="tap-card">
+
+    <!-- LOADING -->
+    <div class="tap-state on" id="st-loading">
+      <div class="tap-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span><span id="bizName1">Taployal</span></div>
+      <div class="tap-emblem">
+        <span class="ring-keeper"></span>
+        <span class="nfc-ring"></span><span class="nfc-ring"></span><span class="nfc-ring"></span>
+        <span class="nfc-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/></svg></span>
+      </div>
+      <h1 class="display">Reading your tap…</h1>
+      <p class="lede">Hold steady for a moment.</p>
+    </div>
+
+    <!-- EARNED -->
+    <div class="tap-state" id="st-earned">
+      <div class="tap-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span><span id="bizName2">Taployal</span></div>
+      <p class="lede" style="margin-bottom:0">Lovely to see you, <b id="earnName" style="color:var(--text-hi)">friend</b>.</p>
+      <div class="tap-award gold-text">+<span id="earnPts">10</span></div>
+      <div class="tap-award-sub">points earned</div>
+      <div class="balance-strip">
+        <div><b id="earnBalance">0</b><span>Balance</span></div>
+        <div><b id="earnVisits">0</b><span>Visits</span></div>
+        <div><b id="earnTier">—</b><span>Tier</span></div>
+      </div>
+      <div class="tier-progress" id="tierProgressWrap">
+        <div class="track"><span class="fill" id="tierFill"></span></div>
+        <div class="labels"><span id="tierNow">Member</span><span class="next" id="tierNextLabel"></span></div>
+      </div>
+      <a class="btn btn-gold btn-block" id="earnWallet" href="#">View my wallet
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </a>
+      <div id="tierUpBanner"></div>
+    </div>
+
+    <!-- COOLDOWN -->
+    <div class="tap-state" id="st-cooldown">
+      <div class="tap-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span><span id="bizName3">Taployal</span></div>
+      <div class="tap-emblem">
+        <span class="nfc-core" style="background:linear-gradient(150deg,rgba(125,214,176,.14),rgba(125,214,176,.04));border-color:rgba(125,214,176,.4);animation:none;box-shadow:0 0 44px rgba(125,214,176,.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7dd6b0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:#7dd6b0"><path d="m4.5 12.5 5 5 10-11"/></svg>
+        </span>
+      </div>
+      <h1 class="display">Already counted, <span id="coolName">friend</span>.</h1>
+      <p class="lede">Today's tap is banked. Your next points unlock in <span class="countdown" id="coolTimer">—</span>.</p>
+      <div class="balance-strip">
+        <div><b id="coolBalance">0</b><span>Balance</span></div>
+        <div><b id="coolVisits">0</b><span>Visits</span></div>
+        <div><b id="coolTier">—</b><span>Tier</span></div>
+      </div>
+      <a class="btn btn-ghost btn-block" id="coolWallet" href="#">View my wallet</a>
+    </div>
+
+    <!-- JOIN -->
+    <div class="tap-state" id="st-join">
+      <div class="tap-brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span><span id="bizName4">Taployal</span></div>
+      <span class="eyebrow" style="justify-content:center;display:inline-flex">First tap — welcome</span>
+      <h1 class="display" style="font-size:27px;margin-top:10px">Claim <span class="gold-text">+<span id="joinBonus">25</span></span> bonus points</h1>
+      <p class="lede" style="margin-bottom:22px">Join the programme right here. It takes ten seconds, and this tag becomes yours.</p>
+      <form id="joinForm" style="text-align:left">
+        <div class="field"><label for="jName">Your name</label><input class="input" id="jName" placeholder="Alex Rivers" autocomplete="name" required /></div>
+        <div class="field"><label for="jEmail">Email</label><input class="input" id="jEmail" type="email" placeholder="alex@example.com" autocomplete="email" required /></div>
+        <button class="btn btn-gold btn-block" type="submit" id="jBtn">Join &amp; claim points</button>
+      </form>
+      <p class="hint" style="margin-top:14px;text-align:center">No app, no password. Your email is your card.</p>
+    </div>
+
+    <!-- JOINED (success after join) -->
+    <div class="tap-state" id="st-joined">
+      <div class="tap-emblem">
+        <span class="nfc-core" style="background:linear-gradient(150deg,rgba(125,214,176,.14),rgba(125,214,176,.04));border-color:rgba(125,214,176,.4);animation:none;box-shadow:0 0 44px rgba(125,214,176,.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7dd6b0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></svg>
+        </span>
+      </div>
+      <h1 class="display" id="joinedTitle">You're in.</h1>
+      <p class="lede" id="joinedSub">Your welcome points are in the wallet.</p>
+      <div class="balance-strip">
+        <div><b id="joinedBalance">25</b><span>Balance</span></div>
+        <div><b>0</b><span>Visits</span></div>
+        <div><b>Member</b><span>Tier</span></div>
+      </div>
+      <a class="btn btn-gold btn-block" id="joinedWallet" href="#">Open my wallet
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- ERROR -->
+    <div class="tap-state" id="st-error">
+      <div class="tap-err-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 2.5 20h19L12 3.5Z"/><path d="M12 9.5V14"/><circle cx="12" cy="17" r=".8" fill="currentColor" stroke="none"/></svg></div>
+      <h1 class="display" id="errTitle">This tag isn't live.</h1>
+      <p class="lede" id="errSub">Ask a team member — they'll sort it in a moment.</p>
+      <a class="btn btn-ghost" href="/">About Taployal</a>
+    </div>
+
+    <hr class="barber" style="margin:30px 0 18px" />
+    <p style="font-size:11px;color:var(--text-lo);letter-spacing:.14em;text-transform:uppercase">Powered by <b style="color:var(--gold)">Taployal</b> · loyalty in a single tap</p>
+  </div>
+</div>
+
+<script src="/js/common.js"></script>
+<script src="/js/tap.js"></script>
+</body>
+</html>
