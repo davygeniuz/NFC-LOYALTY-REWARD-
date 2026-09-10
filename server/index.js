@@ -114,6 +114,16 @@ app.post('/api/auth/logout', (req, res) => {
   res.json({ ok: true });
 });
 
+/* One-click guest access: for demo/pitch links — signs in the demo merchant
+   and drops the visitor straight into the dashboard. */
+app.get('/demo', (req, res) => {
+  const token = crypto.randomBytes(24).toString('hex');
+  sessions.set(token, { createdAt: Date.now() });
+  res.setHeader('Set-Cookie',
+    `taployal_session=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${SESSION_TTL / 1000}`);
+  res.redirect('/app');
+});
+
 app.get('/api/auth/me', (req, res) => {
   if (!sessionToken(req)) return res.status(401).json({ error: 'unauthenticated' });
   res.json({ name: store.data.merchant.name, email: store.data.merchant.email, business: store.data.settings.businessName });
