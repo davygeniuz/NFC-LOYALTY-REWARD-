@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Taployal — Loyalty, with a single tap</title>
+<meta name="description" content="Taployal turns any counter into a loyalty terminal. Customers tap an NFC tag with their phone and earn points instantly — no app, no card, no friction." />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<nav class="site-nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span>
+      <span class="brand-name">Tap<em>loyal</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#demo">Live demo</a>
+    </div>
+    <a class="btn btn-gold btn-sm" href="/app">Open dashboard</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow reveal">NFC loyalty, reimagined</span>
+      <h1 class="display reveal" style="--d:.08s">Loyalty that lives<br/>a <span class="ital gold-text">single tap</span> away.</h1>
+      <p class="hero-sub reveal" style="--d:.16s">Turn any counter into a loyalty terminal. Customers tap a small NFC tag with their phone — points land instantly, tiers unlock, rewards redeem. No app to download, no card to forget.</p>
+      <div class="hero-ctas reveal" style="--d:.24s">
+        <a class="btn btn-gold" href="/demo">View the live demo
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        </a>
+        <button class="btn btn-ghost" id="simTapBtn">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+          Simulate a customer tap
+        </button>
+      </div>
+      <div class="hero-fine reveal" style="--d:.32s">
+        <span class="dot"></span>
+        Live now — <b id="demoBiz" style="font-weight:600;color:var(--text-mid)">Ember &amp; Oak</b> demo opens instantly
+      </div>
+    </div>
+
+    <div class="phone-stage reveal" style="--d:.2s">
+      <div class="float-chip a">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        <span>+10 pts earned<small>Tap · just now</small></span>
+      </div>
+      <div class="float-chip b">
+        <span class="ic" style="background:rgba(201,162,75,.15);color:var(--gold-300)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5.5"/><path d="m8.8 13.5-1.8 7 5-2.8 5 2.8-1.8-7"/></svg></span>
+        <span>Gold tier unlocked<small>Sofia M. · 2m ago</small></span>
+      </div>
+      <div class="phone" id="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div>
+            <div class="greet">Good morning,</div>
+            <div class="greet-name">Sofia Marchetti</div>
+          </div>
+          <div class="nfc-orbit">
+            <span class="nfc-ring"></span><span class="nfc-ring"></span><span class="nfc-ring"></span>
+            <span class="nfc-core">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+            </span>
+          </div>
+          <div class="mini-balance">
+            <div class="amt" id="phonePoints">785</div>
+            <div class="lbl">points balance</div>
+          </div>
+          <div>
+            <div class="mini-progress"><i id="phoneBar"></i></div>
+            <div class="mini-row" style="margin-top:8px"><span>Gold member</span><span>315 to Reserve</span></div>
+          </div>
+          <div class="phone-chiprow">
+            <div class="phone-chip"><b>74</b><span>visits</span></div>
+            <div class="phone-chip"><b>3</b><span>rewards</span></div>
+            <div class="phone-chip"><b>#2</b><span>rank</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <span>Tap to earn</span><span>Instant enrolment</span><span>Live analytics</span>
+    <span>Tier engine</span><span>No app required</span><span>Fraud-safe cooldowns</span>
+    <span>POS-free redemption</span><span>Tag registry</span>
+  </div>
+</div>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow reveal">How it works</span>
+      <h2 class="display reveal" style="--d:.06s">From counter to customer<br/>in three moves.</h2>
+      <p class="reveal" style="--d:.12s">The tag is a tiny URL. The phone is the card reader. Everything else happens in Taployal.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="no">01</div>
+        <h3>Stick a tag on the counter</h3>
+        <p>Register any NFC sticker in seconds from the dashboard. Each one carries your unique earn link — waterproof, battery-free, always on.</p>
+      </div>
+      <div class="step reveal" style="--d:.08s">
+        <div class="no">02</div>
+        <h3>Customers tap &amp; earn</h3>
+        <p>A phone tap opens your branded earn page. First-timers join with a name and email; regulars just watch their balance climb.</p>
+      </div>
+      <div class="step reveal" style="--d:.16s">
+        <div class="no">03</div>
+        <h3>Rewards bring them back</h3>
+        <p>Points convert to perks right from the customer's wallet. You see every tap, tier and redemption in real time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="paper-section section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow reveal" style="color:var(--gold-600)">The platform</span>
+      <h2 class="display reveal" style="--d:.06s">Everything a loyalty<br/>programme needs.</h2>
+      <p class="reveal" style="--d:.12s">Serious infrastructure, quietly packaged. No POS integration, no hardware lease — just tags and a dashboard.</p>
+    </div>
+    <div class="features" id="featureGrid"></div>
+  </div>
+</section>
+
+<section class="section-tight" id="demo">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:34px">
+      <span class="eyebrow reveal">Live on this demo</span>
+      <h2 class="display reveal" style="--d:.06s">The numbers, right now.</h2>
+    </div>
+    <div class="stats-band reveal">
+      <div class="stat-cell"><b data-stat="members">—</b><span>programme members</span></div>
+      <div class="stat-cell"><b data-stat="taps30d">—</b><span>taps · last 30 days</span></div>
+      <div class="stat-cell"><b data-stat="pointsInCirculation">—</b><span>points in circulation</span></div>
+      <div class="stat-cell"><b data-stat="redeems30d">—</b><span>rewards redeemed</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:40px">
+  <div class="wrap">
+    <div class="cta-panel reveal">
+      <span class="eyebrow" style="justify-content:center;display:flex">Try it yourself</span>
+      <h2 class="display">Run the full loop.<br/><span class="ital">Tap, earn, redeem.</span></h2>
+      <p>The demo is a complete sandbox: a merchant dashboard with live analytics, plus the customer tap and wallet experiences.</p>
+      <div class="cta-actions">
+        <a class="btn btn-gold" href="/demo">Explore the dashboard</a>
+        <button class="btn btn-ghost" id="simTapBtn2">Feel a customer tap</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span>
+      <span class="brand-name">Tap<em>loyal</em></span>
+    </a>
+    <p>Crafted for independents · demo tenant is fictional · © <span id="year"></span> Taployal</p>
+  </div>
+</footer>
+
+<script src="/js/common.js"></script>
+<script src="/js/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Render.com blueprint — deploys straight from this GitHub repo (no CLI).
+# Dashboard → New → Blueprint → pick this repo, or click "Deploy to Render".
+services:
+  - type: web
+    name: taployal
+    runtime: docker          # uses the Dockerfile in this repo
+    plan: free               # upgrade to a paid plan to attach the disk below
+    healthCheckPath: /api/health
+    autoDeploy: true         # every push to the branch redeploys
+    # --- Persistence (paid plans only) ---------------------------------
+    # Uncomment to keep taps/points across restarts. Free tier re-seeds the
+    # demo world on each boot — arguably ideal for pitching: every audience
+    # sees the same fresh, curated Ember & Oak data.
+    # disk:
+    #   name: taployal-data
+    #   mountPath: /data
+    #   sizeGB: 1
+    # envVars:
+    #   - key: TAPLOYAL_DATA_DIR
+    #     value: /data

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>My wallet · Ember &amp; Oak</title>
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#f4f0e6" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="wallet-body">
+
+<canvas id="confetti"></canvas>
+
+<div class="wallet-wrap" id="walletWrap" hidden>
+  <div class="wallet-hi">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span>
+      <span class="brand-name" id="walletBiz">Taployal</span>
+    </a>
+    <span class="where" id="walletTagline">member wallet</span>
+  </div>
+
+  <!-- membership card -->
+  <div class="member-card" id="memberCard">
+    <div class="mc-head">
+      <div class="mc-brand"><span id="mcBiz">TAPLOYAL</span><small id="mcSub">specialty coffee roasters</small></div>
+      <svg class="mc-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <div class="mc-points">
+      <div class="amt" id="mcPoints">0</div>
+      <div class="lbl">points balance</div>
+    </div>
+    <div class="mc-foot">
+      <div>
+        <div class="mc-name" id="mcName">—</div>
+        <div class="mc-uid" id="mcUid">—</div>
+      </div>
+      <span class="mc-tier" id="mcTier">Member</span>
+    </div>
+  </div>
+
+  <div class="wallet-progress" id="progressWrap">
+    <div class="labels"><span id="pgNow"><b>Member</b></span><span id="pgNext"></span></div>
+    <div class="track"><span class="fill" id="pgFill"></span></div>
+  </div>
+
+  <!-- rewards -->
+  <div class="wallet-section-title">
+    <h2>Rewards</h2>
+    <span id="rewardCount"></span>
+  </div>
+  <div id="rewardList"></div>
+
+  <!-- activity -->
+  <div class="wallet-section-title">
+    <h2>Activity</h2>
+    <span>recent</span>
+  </div>
+  <div id="activityList"></div>
+
+  <div class="wallet-foot">
+    Earn <b id="footPPV">10</b> points on every visit — just tap the tag at the counter.<br/>
+    Powered by <b style="color:var(--gold-600)">Taployal</b>
+  </div>
+</div>
+
+<!-- states for unknown / unassigned tags -->
+<div class="wallet-wrap" id="walletEmpty" hidden>
+  <div class="wallet-hi">
+    <a class="brand" href="/">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#221a08" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 0-6"/><path d="M10 17.5a7.5 7.5 0 0 1 0-11"/><path d="M13 20a11 11 0 0 1 0-16"/><circle cx="4" cy="12" r="1.2" fill="#221a08" stroke="none"/></svg></span>
+      <span class="brand-name">Taployal</span>
+    </a>
+  </div>
+  <div style="text-align:center;padding:70px 16px">
+    <h1 class="display" style="font-size:30px" id="weTitle">Nothing here yet.</h1>
+    <p style="color:var(--text-dark-mid);margin:12px 0 26px;font-size:15px" id="weSub">This tag hasn't been claimed. Tap it with your phone to join the programme.</p>
+    <a class="btn btn-dark" id="weAction" href="#">Tap to join</a>
+  </div>
+</div>
+
+<!-- confirm redeem modal -->
+<div class="modal-overlay" id="redeemModal">
+  <div class="modal" role="dialog" aria-modal="true" style="width:min(420px,100%)">
+    <div class="modal-head">
+      <h2 class="display modal-title">Redeem reward?</h2>
+      <button class="icon-btn" data-close><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <p class="modal-sub" id="rdText"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" data-close>Not yet</button>
+      <button class="btn btn-gold" id="rdGo">Yes, redeem</button>
+    </div>
+  </div>
+</div>
+
+<!-- voucher modal -->
+<div class="modal-overlay" id="voucherModal">
+  <div class="modal" role="dialog" aria-modal="true" style="width:min(420px,100%)">
+    <div class="modal-head">
+      <h2 class="display modal-title">Enjoy. ☕</h2>
+      <button class="icon-btn" data-close><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <p class="modal-sub" id="vcSub"></p>
+    <div class="voucher">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-lo);margin-bottom:8px">Show this code at the counter</div>
+      <div class="code" id="vcCode">—</div>
+      <p id="vcMeta"></p>
+    </div>
+    <div class="balance-strip" style="margin:0">
+      <div style="grid-column:1/-1;border-right:0"><b id="vcBalance">0</b><span>remaining balance</span></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-gold btn-block" data-close>Done</button></div>
+  </div>
+</div>
+
+<div class="toast-root"></div>
+
+<script src="/js/common.js"></script>
+<script src="/js/wallet.js"></script>
+</body>
+</html>
